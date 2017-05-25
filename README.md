@@ -5,3 +5,11 @@ Fortunately, PHP’s allows replacement of its built in functionality via class 
 
 Nohoni requires the [Yukon database library](https://github.com/DCurrent/Yukon) . Both are meant for use with MSSQL, but may be easily modified to accommodate other RDBMS if desired. 
 
+# Install
+Note these instructions assume you have already instaled the [Yukon database library](https://github.com/DCurrent/Yukon) and have registered an autoload class.
+
+1. Download and extract package.
+1. Locate the datbase folders and run the enlosed scripts with your RDBMS. This will create the needed table and stored procedures.
+1. Located the following line in class Session constructor: <code>\dc\yukon\Database()</code>. Adjust the path to suit your application file tree.
+1. All PHP session methods are now now overidden with the Nahoni library. Start a PHP session and set a session variable. You should be able to locate the session as a table entry inyour RDMS.
+
