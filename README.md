@@ -11,5 +11,5 @@ Note these instructions assume you have already installed the [Yukon database li
 1. Download and extract package.
 1. Locate _database_ folder and run the enclosed scripts with your RDBMS. This will create the needed table and stored procedures.
 1. Modify <code>\dc\yukon\Database()</code> path in _class Session_ constructor to suit your application file tree.
-1. All PHP session methods are now overridden with the Nahoni Library. Start a PHP session and set a session variable. You should be able to locate the session as a table entry in your RDMS.
+1. All PHP session methods are now overridden with the Nahoni Library. Start a PHP session and set a session variable. You should be able to locate the session as a table entry in your RDBMS.
 
