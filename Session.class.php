@@ -1,6 +1,6 @@
 <?php
 
-namespace dc\session;
+namespace dc\nahoni;
 
 require_once('config.php');
 
