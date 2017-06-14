@@ -63,7 +63,7 @@ class Session implements \SessionHandlerInterface
 		$iDatabase = $this->iDatabase_m;
 		
 		// String - call stored procedure.
-		$iDatabase->set_sql('{call stf_session_get(@id = ?)}');				
+		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_get(@id = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
@@ -109,7 +109,7 @@ class Session implements \SessionHandlerInterface
 		$iDatabase = $this->iDatabase_m;
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call stf_session_set(@id 			= ?,
+		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_set(@id 			= ?,
 											@data 			= ?,											
 											@source 		= ?,
 											@ip 			= ?)}');				
@@ -137,7 +137,7 @@ class Session implements \SessionHandlerInterface
 		$iDatabase = $this->iDatabase_m;
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call stf_session_destroy(@id = ?)}');				
+		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_destroy(@id = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
@@ -169,7 +169,7 @@ class Session implements \SessionHandlerInterface
 		$iDatabase = $this->iDatabase_m;
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call stf_session_clean(@life_max = ?)}');				
+		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_clean(@life_max = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$life_max, SQLSRV_PARAM_IN));
