@@ -1,7 +1,7 @@
 -- session_destroy
 -- 2012-02-21
 -- Caskey, Damon V.
--- https://github.com/DCurrent/Session
+-- https://github.com/DCurrent/Nahoni
 
 -- Destroy session data by ID.
 

@@ -1,7 +1,7 @@
 -- tbl_session
 -- 2012-02-21
 -- Caskey, Damon V.
--- https://github.com/DCurrent/Session
+-- https://github.com/DCurrent/Nahoni
 
 -- Build table to store session data from PHP applications.
 
