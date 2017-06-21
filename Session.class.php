@@ -15,7 +15,7 @@ class Session implements \SessionHandlerInterface, iSession
 {    
 	
 	private
-		$config			= NULL,	// Config options.
+		$config			= NULL;	// Config options.
 
 	function __construct(SessionConfig $config = NULL)
 	{
