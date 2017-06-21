@@ -95,7 +95,7 @@ class SessionConfig implements iSessionConfig
 		$this->sp_clean = $value;
 	}
 	
-	function set_sp_destory($value)
+	function set_sp_destroy($value)
 	{
 		$this->sp_destroy = $value;
 	}
