@@ -4,28 +4,49 @@ namespace dc\nahoni;
 
 require_once('config.php');
 
+interface iSession
+{
+	function get_config();
+	function set_config(SessionConfig $value);
+}
+
 // Override PHP's default session handling to store data in an MSSQL table. 
-class Session implements \SessionHandlerInterface
+class Session implements \SessionHandlerInterface, iSession
 {    
 	
-	private	
-		$db_conn_m	= NULL,	// Database conneciton object.
-		$iDatabase_m	= NULL,	// Database query object.
-		$life		= NULL;	// Maximum lifetime of session.
+	private
+		$config			= NULL,	// Config options.
 
-	function __construct()
+	function __construct(SessionConfig $config = NULL)
 	{
-		// echo '__construct';
-								
-		// Set class vars.
-		$this->life = DEFAULTS::LIFE;			
-		
-		$this->iDatabase_m	= new \dc\yukon\Database();
+		// Set connection parameters member. If no argument
+		// is provided, then create a blank connection
+		// parameter instance.
+		if($config)
+		{
+			$this->set_config($config);
+		}
+		else
+		{
+			$this->set_config(new SessionConfig);
+		}
 	}
 	
 	function __destruct()
 	{
 		// echo '__destruct';		
+	}
+	
+	// Accessors
+	public function get_config()
+	{
+		return $this->config;
+	}
+	
+	// Mutators
+	public function set_config(SessionConfig $value)
+	{
+		$this->config = $value;
 	}
     
 	// Called by PHP to open session. Construct does all the work
@@ -59,11 +80,11 @@ class Session implements \SessionHandlerInterface
     {		
 		// echo 'read';        
 
-		// Dereference query object.
-		$iDatabase = $this->iDatabase_m;
+		// Dereference database object.
+		$iDatabase = $this->config->get_database();
 		
 		// String - call stored procedure.
-		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_get(@id = ?)}');				
+		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_get().'(@id = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
@@ -105,11 +126,11 @@ class Session implements \SessionHandlerInterface
 		// Ensure IP string is <= 15. Anything over is a MAC or unexpected (and useless) value. */
 		$ip = substr($ip, 0, 15);
 		
-		// Dereference query object.
-		$iDatabase = $this->iDatabase_m;
+		// Dereference database object.
+		$iDatabase = $this->config->get_database();
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_set(@id 			= ?,
+		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_set().'(@id 			= ?,
 											@data 			= ?,											
 											@source 		= ?,
 											@ip 			= ?)}');				
@@ -133,11 +154,11 @@ class Session implements \SessionHandlerInterface
     {	
 		// echo 'Destroy';
 
-		// Dereference query object.
-		$iDatabase = $this->iDatabase_m;
+		// Dereference database object.
+		$iDatabase = $this->config->get_database();
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_destroy(@id = ?)}');				
+		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_destroy().'(@id = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
@@ -160,16 +181,16 @@ class Session implements \SessionHandlerInterface
 		
 		// If local setting isn't NULL, use it to override the default
 		// lifetime value.
-		if(DEFAULTS::LIFE != NULL)
+		if($this->config->get_life() != NULL)
 		{
-			$life_max = DEFAULTS::LIFE;
+			$life_max = $this->config->get_life();
 		}
 		
-		// Dereference query object.
-		$iDatabase = $this->iDatabase_m;
+		// Dereference database object.
+		$iDatabase = $this->config->get_database();
 		
 		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.DEFAULTS::OBJECT_PREFIX.'session_clean(@life_max = ?)}');				
+		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_clean().'(@life_max = ?)}');				
 
 		// Prepare parameter array.
 		$params = array(array(&$life_max, SQLSRV_PARAM_IN));
