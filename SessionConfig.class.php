@@ -59,7 +59,7 @@ class SessionConfig implements iSessionConfig
 		return $this->sp_clean;
 	}
 	
-	function get_sp_destory()
+	function get_sp_destroy()
 	{
 		return $this->sp_destroy;
 	}
