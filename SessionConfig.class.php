@@ -105,7 +105,7 @@ class SessionConfig implements iSessionConfig
 		$this->sp_get = $value;	
 	}
 	
-	function get_sp_prefix($value)
+	function set_sp_prefix($value)
 	{
 		$this->sp_prefix = $value;	
 	}
