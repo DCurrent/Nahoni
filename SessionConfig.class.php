@@ -2,6 +2,8 @@
 
 namespace dc\nahoni;
 
+require_once('config.php');
+
 // Structure of parameters used for database connection attempt.
 interface iSessionConfig
 {	
