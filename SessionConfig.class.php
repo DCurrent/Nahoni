@@ -11,14 +11,16 @@ interface iSessionConfig
 	function set_life($value);		// Return lifespan of session data.	
 }
 
-class SessionConfig
+class SessionConfig implements iSessionConfig
 {
-	const 	LIFE			= NULL,	// Default session lifetime.
-			OBJECT_PREFIX	= NULL;	// Prefix for table and SP object names.
-	
 	private
 		$database	= NULL,
 		$life		= NULL;
+	
+	public function __construct()
+	{
+		$this->life = DEFAULTS::LIFE;
+	}
 	
 	// Accessors
 	public function get_database()
