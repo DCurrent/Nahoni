@@ -91,13 +91,12 @@ class Session implements \SessionHandlerInterface, iSession
 		
 		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
-		$iDatabase->query();
-		
+		$iDatabase->query_run();		
 		
 		if($iDatabase->get_row_exists())
 		{
 			// Set class and acquire object.
-			$iDatabase->get_line_params()->set_class_name(__NAMESPACE__.'\Data');
+			$iDatabase->get_line_config()->set_class_name(__NAMESPACE__.'\Data');
 			$result = $iDatabase->get_line_object();	
 		}
 		else
@@ -143,7 +142,7 @@ class Session implements \SessionHandlerInterface, iSession
 						
 		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
-		$iDatabase->query();		
+		$iDatabase->query_run();		
 					
 		// Return TRUE. 
 		return TRUE;
@@ -165,7 +164,7 @@ class Session implements \SessionHandlerInterface, iSession
 		
 		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
-		$iDatabase->query();		
+		$iDatabase->query_run();		
 		
 		// Return TRUE.
 		return TRUE;
@@ -197,7 +196,8 @@ class Session implements \SessionHandlerInterface, iSession
 		
 		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
-		$iDatabase->query();		
+
+		$iDatabase->query_run();		
 		
 		// Return TRUE.
 		return TRUE;
