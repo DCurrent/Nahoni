@@ -90,7 +90,7 @@ class Session implements \SessionHandlerInterface, iSession
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
 		
 		// Bind parameters and execute query.
-		$iDatabase->set_params($params);				
+		$iDatabase->set_param_array($params);				
 		$iDatabase->query();
 		
 		
@@ -142,7 +142,7 @@ class Session implements \SessionHandlerInterface, iSession
 						array($ip, SQLSRV_PARAM_IN));
 						
 		// Bind parameters and execute query.
-		$iDatabase->set_params($params);				
+		$iDatabase->set_param_array($params);				
 		$iDatabase->query();		
 					
 		// Return TRUE. 
@@ -164,7 +164,7 @@ class Session implements \SessionHandlerInterface, iSession
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
 		
 		// Bind parameters and execute query.
-		$iDatabase->set_params($params);				
+		$iDatabase->set_param_array($params);				
 		$iDatabase->query();		
 		
 		// Return TRUE.
@@ -196,7 +196,7 @@ class Session implements \SessionHandlerInterface, iSession
 		$params = array(array(&$life_max, SQLSRV_PARAM_IN));
 		
 		// Bind parameters and execute query.
-		$iDatabase->set_params($params);				
+		$iDatabase->set_param_array($params);				
 		$iDatabase->query();		
 		
 		// Return TRUE.
