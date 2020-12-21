@@ -4,7 +4,7 @@ namespace dc\nahoni;
 
 abstract class DEFAULTS	
 {
-	const 	LIFE		= 1440;					// Default session lifetime (seconds).
+	const 	LIFE		= NULL;					// Default session lifetime (seconds). Leave NULL to get value from php.ini session.gc_maxlifetime parameter.
 			
 			// Stored procedure default names.
 	const	SP_PREFIX	= NULL,					// Prefix for all other SP names.
