@@ -14,8 +14,7 @@ interface iSession
 class Session implements \SessionHandlerInterface, iSession
 {    
 	
-	private
-		$config			= NULL;	// Config options.
+	private	$config	= NULL;	// Config options.
 
 	function __construct(SessionConfig $config = NULL)
 	{
@@ -53,9 +52,7 @@ class Session implements \SessionHandlerInterface, iSession
 	// we'd normally put here, so leave it blank.
    	public function open($savePath, $sessionName)
     {	
-		// echo 'open';
-		
-		
+		// echo 'open';		
 		
 		// $savePath: 		Path to locate session file. Unused.
 		// $sessionName:	Name of session file. Unused.
@@ -69,8 +66,6 @@ class Session implements \SessionHandlerInterface, iSession
     {	
 		// echo 'close';
 		
-		
-		
 		// Return TRUE.
         return TRUE;
     }
@@ -80,18 +75,33 @@ class Session implements \SessionHandlerInterface, iSession
     {		
 		// echo 'read';        
 
-		// Dereference database object.
 		$iDatabase = $this->config->get_database();
 		
-		// String - call stored procedure.
-		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_get().'(@id = ?)}');				
-
-		// Prepare parameter array.
-		$params = array(array(&$id, SQLSRV_PARAM_IN));
+		// Populate database class members with 
+		// the SQL string of our stored procedure
+		// and its parameter array. Then we can 
+		// execute.
 		
-		// Bind parameters and execute query.
-		$iDatabase->set_param_array($params);				
+		$sql_string = '{call '.$this->config->get_sp_prefix().$this->config->get_sp_get().'(@id = ?)}';
+		$iDatabase->set_sql($sql_string);
+		
+		$params = array(array(&$id, SQLSRV_PARAM_IN));
+		$iDatabase->set_param_array($params);
+		
 		$iDatabase->query_run();		
+		
+		// If there is a row returned from the 
+		// database we need to send the name
+		// of our data class so our database
+		// handler can populate it (data class) 
+		// as an object with the row data.
+		//
+		// If we got no rows returned, then
+		// establish a blank copy of our
+		// data class instead.
+		//
+		// Either way, we get and return the
+		// value of "session_data" member. 
 		
 		if($iDatabase->get_row_exists())
 		{
@@ -104,8 +114,19 @@ class Session implements \SessionHandlerInterface, iSession
 			$result = new Data();
 		}
 		
-		// Return session data.
-		return $result->get_session_data();		
+		// 7.1+ throws an error when returning a
+		// NULL value on session start up. If our
+		// session_data member is NULL, return
+		// an empty string instead.
+		
+		$output = $result->get_session_data();	
+		
+		if(is_null($output))
+		{
+			$output = '';			
+		}
+		
+		return $output;		
     }
 
 	// Update or insert session data. Note that only ID and Session Data are 
@@ -122,26 +143,31 @@ class Session implements \SessionHandlerInterface, iSession
 		// and let the stored procedure add in the database engine's own current time.
 		$time	= NULL; //date(DATE_ATOM);
 		
-		// Ensure IP string is <= 15. Anything over is a MAC or unexpected (and useless) value. */
+		// Ensure IP string is <= 15. Anything over is a MAC or unexpected (and useless) value.
 		$ip = substr($ip, 0, 15);
 		
-		// Dereference database object.
 		$iDatabase = $this->config->get_database();
 		
-		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_set().'(@id 			= ?,
+		// Populate database class members with 
+		// the SQL string of our stored procedure
+		// and its parameter array. Then we can 
+		// execute.
+		
+		$set_sql = '{call '.$this->config->get_sp_prefix().$this->config->get_sp_set().'(@id 			= ?,
 											@data 			= ?,											
 											@source 		= ?,
-											@ip 			= ?)}');				
+											@ip 			= ?)}';
+		
+		$iDatabase->set_sql($set_sql);				
 
-		// Prepare parameter array.
+		
 		$params = array(array($id, SQLSRV_PARAM_IN),
 						array($data, SQLSRV_PARAM_IN),
 						array($source, SQLSRV_PARAM_IN),
-						array($ip, SQLSRV_PARAM_IN));
-						
-		// Bind parameters and execute query.
-		$iDatabase->set_param_array($params);				
+						array($ip, SQLSRV_PARAM_IN));						
+		
+		$iDatabase->set_param_array($params);		
+		
 		$iDatabase->query_run();		
 					
 		// Return TRUE. 
@@ -153,20 +179,21 @@ class Session implements \SessionHandlerInterface, iSession
     {	
 		// echo 'Destroy';
 
-		// Dereference database object.
 		$iDatabase = $this->config->get_database();
 		
-		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_destroy().'(@id = ?)}');				
+		// Populate database class members with 
+		// the SQL string of our stored procedure
+		// and its parameter array. Then we can 
+		// execute.
+				
+		$sql_string = '{call '.$this->config->get_sp_prefix().$this->config->get_sp_destroy().'(@id = ?)}';		
+		$iDatabase->set_sql($sql_string);				
 
-		// Prepare parameter array.
 		$params = array(array(&$id, SQLSRV_PARAM_IN));
-		
-		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
-		$iDatabase->query_run();		
 		
-		// Return TRUE.
+		$iDatabase->query_run();		
+				
 		return TRUE;
     }
 
@@ -185,16 +212,17 @@ class Session implements \SessionHandlerInterface, iSession
 			$life_max = $this->config->get_life();
 		}
 		
-		// Dereference database object.
-		$iDatabase = $this->config->get_database();
+		// Populate database class members with 
+		// the SQL string of our stored procedure
+		// and its parameter array. Then we can 
+		// execute.
 		
-		// SQL string - call stored procedure.
-		$iDatabase->set_sql('{call '.$this->config->get_sp_prefix().$this->config->get_sp_clean().'(@life_max = ?)}');				
+		$iDatabase = $this->config->get_database();		
+		
+		$sql_string = '{call '.$this->config->get_sp_prefix().$this->config->get_sp_clean().'(@life_max = ?)}';
+		$iDatabase->set_sql($sql_string);				
 
-		// Prepare parameter array.
 		$params = array(array(&$life_max, SQLSRV_PARAM_IN));
-		
-		// Bind parameters and execute query.
 		$iDatabase->set_param_array($params);				
 
 		$iDatabase->query_run();		
