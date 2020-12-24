@@ -21,7 +21,8 @@ Note these instructions assume you have already configured [PDO]((https://www.ph
 1. All PHP session methods are now overridden with the Nahoni Library. Start a PHP session and set a session variable. You should be able to locate the session as a table entry in your RDBMS.
 
 ```	
-// First you need an active PDO connection..
+// First you need an active PDO connection.
+
 $dsn = 'sqlsrv:Server=RDBMS_HOSTNAME;Database=DATABASE_NAME';
 $user = 'DATABASE_USER_NAME';
 $password = 'DATABASE_USER_PASSWORD';
@@ -43,12 +44,13 @@ $session_handler = new \dc\nahoni\Session($nahoni_config);
 session_set_save_handler($session_handler, TRUE);
 
 // Start the session.
+
 session_start();
 
 // Write and read some session data. You should
 // see this data updated in the RDBMS table.
-$_SESSION['TEST_SESSION_VAR'] = 'Hello world';
 
+$_SESSION['TEST_SESSION_VAR'] = 'Hello world';
 echo $_SESSION['TEST_SESSION_VAR'];
 ```
 
