@@ -4,14 +4,14 @@ namespace dc\nahoni;
 
 abstract class DEFAULTS	
 {
-	const 	LIFE		= NULL;					// Default session lifetime (seconds). Leave NULL to get value from php.ini session.gc_maxlifetime parameter.
+	const 	LIFE		= 1440;					// Default session lifetime (seconds).
 			
 			// Stored procedure default names.
-	const	SP_PREFIX	= NULL,					// Prefix for all other SP names.
-			SP_CLEAN	= 'session_clean',		// SP to remove all expired sessions.
-			SP_DESTROY	= 'session_destroy',		// SP to remove single session on command.
-			SP_GET		= 'session_get',		// SP to read session data.
-			SP_SET		= 'session_set';		// SP to write session data.
+	const	SP_PREFIX	= NULL;							// Prefix for all other SP names.
+	const	SP_CLEAN	= 'dc_nahoni_session_clean';	// SP to remove all expired sessions.
+	const	SP_DESTROY	= 'dc_nahoni_session_destroy';	// SP to remove single session on command.
+	const	SP_GET		= 'dc_nahoni_session_get';		// SP to read session data.
+	const	SP_SET		= 'dc_nahoni_session_set';		// SP to write session data.
 }
 
 ?>
