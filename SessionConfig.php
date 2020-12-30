@@ -26,14 +26,13 @@ interface iSessionConfig
 
 class SessionConfig implements iSessionConfig
 {
-	private
-		$database	= NULL,
-		$life		= NULL,
-		$sp_prefix	= NULL,
-		$sp_clean	= NULL,
-		$sp_destroy	= NULL,
-		$sp_get		= NULL,
-		$sp_set		= NULL;
+	private	$database	= NULL;
+	private	$life		= NULL;
+	private	$sp_prefix	= NULL;
+	private	$sp_clean	= NULL;
+	private	$sp_destroy	= NULL;
+	private	$sp_get		= NULL;
+	private	$sp_set		= NULL;
 	
 	public function __construct(String $config_file = NULL)
 	{
