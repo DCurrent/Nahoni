@@ -6,7 +6,7 @@ Fortunately you may replace the default session functionality via class file ove
 Nahoni utilizes [PHP Data Objects (PDO)](https://www.php.net/manual/en/book.pdo.php) for database handling. The underlying code is written for Microsoft SQL Server but is easily adaptable to fit any common RDBMS.  
 
 # Install
-Note these instructions assume you have already configured [PDO]((https://www.php.net/manual/en/book.pdo.php) for your RDBMS.
+Note these instructions assume you have already configured [PDO](https://www.php.net/manual/en/book.pdo.php) for your RDBMS.
 
 1. Download and extract package.
 1. Place extracted files in your web application file tree: {your parent location}/dc/nahoni
